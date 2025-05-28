@@ -37,17 +37,17 @@ export class QdrantService {
         },
       });
 
-      await client.createFieldIndex(collectionName, {
+      await client.createPayloadIndex(collectionName, {
         field_name: 'project_id',
         field_schema: 'keyword',
       });
 
-      await client.createFieldIndex(collectionName, {
+      await client.createPayloadIndex(collectionName, {
         field_name: 'source_id',
         field_schema: 'keyword',
       });
 
-      await client.createFieldIndex(collectionName, {
+      await client.createPayloadIndex(collectionName, {
         field_name: 'document_id',
         field_schema: 'keyword',
       });

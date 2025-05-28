@@ -8,21 +8,15 @@ WORKDIR /app
 # Development stage
 FROM base AS development
 ENV NODE_ENV=development
-COPY package.json pnpm-workspace.yaml turbo.json ./
-COPY apps/api/package.json apps/api/
-COPY packages/*/package.json packages/*/
-RUN pnpm install
 COPY . .
+RUN pnpm install
 EXPOSE 3000
 CMD ["pnpm", "--filter=api", "dev"]
 
 # Builder stage
 FROM base AS builder
-COPY package.json pnpm-workspace.yaml turbo.json ./
-COPY apps/api/package.json apps/api/
-COPY packages/*/package.json packages/*/
-RUN pnpm install
 COPY . .
+RUN pnpm install
 RUN pnpm --filter=api build
 
 # Production stage
