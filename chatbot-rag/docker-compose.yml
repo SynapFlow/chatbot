@@ -88,45 +88,27 @@ services:
     networks:
       - chatbot-network
 
-  admin:
+  web:
     build:
       context: .
-      dockerfile: ./apps/admin/Dockerfile
+      dockerfile: ./apps/web/Dockerfile
       target: development
-    container_name: chatbot-admin
+    container_name: chatbot-web
     environment:
       NODE_ENV: development
-      NEXT_PUBLIC_API_URL: http://localhost:3000/api/v1
-      NEXTAUTH_URL: http://localhost:3001
-      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      NEXT_PUBLIC_API_URL: http://localhost:3000/api
+      API_URL: http://api:3000/api
     ports:
-      - "3001:3001"
+      - "3001:3000"
     volumes:
-      - ./apps/admin:/app/apps/admin
+      - ./apps/web:/app/apps/web
       - ./packages:/app/packages
       - /app/node_modules
-      - /app/apps/admin/node_modules
-      - /app/apps/admin/.next
+      - /app/apps/web/node_modules
+      - /app/apps/web/.next
     depends_on:
       - api
-    command: pnpm --filter=admin dev -p 3001
-    networks:
-      - chatbot-network
-
-  widget-dev:
-    build:
-      context: .
-      dockerfile: ./apps/widget/Dockerfile
-      target: development
-    container_name: chatbot-widget-dev
-    ports:
-      - "3002:3002"
-    volumes:
-      - ./apps/widget:/app/apps/widget
-      - ./packages:/app/packages
-      - /app/node_modules
-      - /app/apps/widget/node_modules
-    command: pnpm --filter=widget dev
+    command: pnpm --filter=web dev
     networks:
       - chatbot-network
 

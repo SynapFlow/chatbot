@@ -1,7 +1,6 @@
 import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { BullModule } from '@nestjs/bull';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import configuration from './config/configuration';
@@ -14,7 +13,7 @@ import { SourcesModule } from './modules/sources/sources.module';
 import { DocumentsModule } from './modules/documents/documents.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { WebsocketModule } from './modules/websocket/websocket.module';
-import { QueueModule } from './modules/queue/queue.module';
+import { QueueModule as ApiQueueModule } from './modules/queue/queue.module';
 import { WebhooksModule } from './modules/webhooks/webhooks.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { HealthModule } from './modules/health/health.module';
@@ -22,6 +21,14 @@ import { LoggerModule } from './common/logger/logger.module';
 import { TenantModule } from './modules/tenant/tenant.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
+
+// Import shared packages
+import { QueueModule } from '@chatbot-rag/queue';
+import { EventsModule } from '@chatbot-rag/events';
+import { EmbeddingModule } from '@chatbot-rag/embeddings';
+import { VectorStoreModule } from '@chatbot-rag/vector-store';
+import { ParserModule } from '@chatbot-rag/parser';
+import { ChunkerModule } from '@chatbot-rag/chunker';
 
 @Module({
   imports: [
@@ -41,26 +48,14 @@ import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
         },
       ],
     }),
-    BullModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        redis: {
-          host: config.get('redis.host'),
-          port: config.get('redis.port'),
-          password: config.get('redis.password'),
-        },
-        defaultJobOptions: {
-          attempts: 3,
-          backoff: {
-            type: 'exponential',
-            delay: 2000,
-          },
-          removeOnComplete: true,
-          removeOnFail: false,
-        },
-      }),
-    }),
+    // Shared packages
+    QueueModule,
+    EventsModule,
+    EmbeddingModule,
+    VectorStoreModule,
+    ParserModule,
+    ChunkerModule,
+    // Core modules
     LoggerModule,
     TenantModule,
     AuthModule,
@@ -71,7 +66,7 @@ import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
     DocumentsModule,
     ChatModule,
     WebsocketModule,
-    QueueModule,
+    ApiQueueModule,
     WebhooksModule,
     AnalyticsModule,
     HealthModule,
