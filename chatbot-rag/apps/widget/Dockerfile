@@ -11,7 +11,7 @@ ENV NODE_ENV=development
 COPY package.json pnpm-workspace.yaml turbo.json ./
 COPY apps/widget/package.json apps/widget/
 COPY packages/*/package.json packages/*/
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 COPY . .
 EXPOSE 3002
 CMD ["pnpm", "--filter=widget", "dev"]
@@ -21,7 +21,7 @@ FROM base AS builder
 COPY package.json pnpm-workspace.yaml turbo.json ./
 COPY apps/widget/package.json apps/widget/
 COPY packages/*/package.json packages/*/
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 COPY . .
 RUN pnpm --filter=widget build
 

@@ -15,7 +15,7 @@
     "@chatbot-rag/shared": "workspace:*",
     "playwright": "^1.40.0",
     "playwright-extra": "^4.3.6",
-    "playwright-extra-plugin-stealth": "^2.11.2",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "cheerio": "^1.0.0-rc.12",
     "robots-parser": "^3.0.0",
     "p-queue": "^7.4.1",

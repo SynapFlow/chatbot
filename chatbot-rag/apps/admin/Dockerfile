@@ -11,7 +11,7 @@ ENV NODE_ENV=development
 COPY package.json pnpm-workspace.yaml turbo.json ./
 COPY apps/admin/package.json apps/admin/
 COPY packages/*/package.json packages/*/
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 COPY . .
 EXPOSE 3001
 CMD ["pnpm", "--filter=admin", "dev", "-p", "3001"]
@@ -21,7 +21,7 @@ FROM base AS builder
 COPY package.json pnpm-workspace.yaml turbo.json ./
 COPY apps/admin/package.json apps/admin/
 COPY packages/*/package.json packages/*/
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 COPY . .
 RUN pnpm --filter=admin build
 

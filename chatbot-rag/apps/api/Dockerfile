@@ -11,7 +11,7 @@ ENV NODE_ENV=development
 COPY package.json pnpm-workspace.yaml turbo.json ./
 COPY apps/api/package.json apps/api/
 COPY packages/*/package.json packages/*/
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 COPY . .
 EXPOSE 3000
 CMD ["pnpm", "--filter=api", "dev"]
@@ -21,7 +21,7 @@ FROM base AS builder
 COPY package.json pnpm-workspace.yaml turbo.json ./
 COPY apps/api/package.json apps/api/
 COPY packages/*/package.json packages/*/
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 COPY . .
 RUN pnpm --filter=api build
 
