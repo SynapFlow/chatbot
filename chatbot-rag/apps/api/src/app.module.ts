@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { BullModule } from '@nestjs/bull';
@@ -19,6 +19,9 @@ import { WebhooksModule } from './modules/webhooks/webhooks.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { HealthModule } from './modules/health/health.module';
 import { LoggerModule } from './common/logger/logger.module';
+import { TenantModule } from './modules/tenant/tenant.module';
+import { TenantMiddleware } from './common/middleware/tenant.middleware';
+import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
 
 @Module({
   imports: [
@@ -59,6 +62,7 @@ import { LoggerModule } from './common/logger/logger.module';
       }),
     }),
     LoggerModule,
+    TenantModule,
     AuthModule,
     UsersModule,
     OrganizationsModule,
@@ -79,4 +83,10 @@ import { LoggerModule } from './common/logger/logger.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(RequestIdMiddleware, TenantMiddleware)
+      .forRoutes('*');
+  }
+}
