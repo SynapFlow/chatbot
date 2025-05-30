@@ -37,7 +37,9 @@ export function useChatStream(options: UseChatStreamOptions = {}) {
       })
 
       if (!response.ok) {
-        throw new Error('Failed to send message')
+        const errorText = await response.text()
+        console.error('API Error:', response.status, errorText)
+        throw new Error(`Failed to send message: ${response.status} ${response.statusText}`)
       }
 
       if (!response.body) {
@@ -67,10 +69,20 @@ export function useChatStream(options: UseChatStreamOptions = {}) {
           for (const line of lines) {
             if (line.trim() === '') continue
             
-            try {
-              const data: StreamChatResponse = JSON.parse(line.replace(/^data: /, ''))
+            // Skip SSE comments
+            if (line.startsWith(':')) continue
+            
+            // Handle SSE data format
+            if (line.startsWith('data: ')) {
+              const jsonStr = line.slice(6) // Remove 'data: ' prefix
               
-              switch (data.type) {
+              // Skip [DONE] message
+              if (jsonStr === '[DONE]') continue
+              
+              try {
+                const data: StreamChatResponse = JSON.parse(jsonStr)
+                
+                switch (data.type) {
                 case 'content':
                   if (data.content) {
                     fullContent += data.content
@@ -108,8 +120,9 @@ export function useChatStream(options: UseChatStreamOptions = {}) {
                 case 'error':
                   throw new Error(data.error || 'Unknown error')
               }
-            } catch (parseError) {
-              console.warn('Failed to parse SSE data:', line)
+              } catch (parseError) {
+                console.warn('Failed to parse SSE data:', line, parseError)
+              }
             }
           }
         }

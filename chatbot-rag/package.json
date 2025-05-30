@@ -7,6 +7,7 @@
     "packages/*"
   ],
   "scripts": {
+    "start": "./start-local.sh",
     "dev": "turbo dev",
     "dev:api": "turbo dev --filter=api",
     "dev:web": "turbo dev --filter=web",
@@ -23,7 +24,14 @@
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "docker:logs": "docker-compose logs -f",
-    "docker:clean": "docker-compose down -v --remove-orphans"
+    "docker:clean": "docker-compose down -v --remove-orphans",
+    "docker:db": "docker-compose up postgres redis qdrant -d",
+    "setup": "cp .env.example .env && echo 'Please edit .env with your API keys'",
+    "health": "curl -f http://localhost:3000/api/health || echo 'API not running'",
+    "logs:api": "docker-compose logs -f api",
+    "logs:web": "docker-compose logs -f web",
+    "restart:api": "docker-compose restart api",
+    "restart:web": "docker-compose restart web"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Cog6ToothIcon, KeyIcon, DatabaseIcon } from '@heroicons/react/24/outline'
+import { Cog6ToothIcon, KeyIcon, CircleStackIcon } from '@heroicons/react/24/outline'
 
 export function SettingsPanel() {
   const [activeTab, setActiveTab] = useState('general')
@@ -9,7 +9,7 @@ export function SettingsPanel() {
   const tabs = [
     { id: 'general', name: 'General', icon: Cog6ToothIcon },
     { id: 'api', name: 'API Keys', icon: KeyIcon },
-    { id: 'models', name: 'Models', icon: DatabaseIcon },
+    { id: 'models', name: 'Models', icon: CircleStackIcon },
   ]
 
   return (

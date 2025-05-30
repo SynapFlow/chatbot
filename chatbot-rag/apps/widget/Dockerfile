@@ -10,7 +10,21 @@ FROM base AS development
 ENV NODE_ENV=development
 COPY package.json pnpm-workspace.yaml turbo.json ./
 COPY apps/widget/package.json apps/widget/
-COPY packages/*/package.json packages/*/
+
+# Copy package.json files individually to preserve directory structure
+COPY packages/shared/package.json ./packages/shared/
+COPY packages/vector-store/package.json ./packages/vector-store/
+COPY packages/queue/package.json ./packages/queue/
+COPY packages/parser/package.json ./packages/parser/
+COPY packages/events/package.json ./packages/events/
+COPY packages/embeddings/package.json ./packages/embeddings/
+COPY packages/crawler/package.json ./packages/crawler/
+COPY packages/chunker/package.json ./packages/chunker/
+COPY packages/chat/package.json ./packages/chat/
+COPY packages/database/package.json ./packages/database/
+COPY packages/types/package.json ./packages/types/
+COPY packages/ui/package.json ./packages/ui/
+
 RUN pnpm install
 COPY . .
 EXPOSE 3002
@@ -20,7 +34,21 @@ CMD ["pnpm", "--filter=widget", "dev"]
 FROM base AS builder
 COPY package.json pnpm-workspace.yaml turbo.json ./
 COPY apps/widget/package.json apps/widget/
-COPY packages/*/package.json packages/*/
+
+# Copy package.json files individually to preserve directory structure
+COPY packages/shared/package.json ./packages/shared/
+COPY packages/vector-store/package.json ./packages/vector-store/
+COPY packages/queue/package.json ./packages/queue/
+COPY packages/parser/package.json ./packages/parser/
+COPY packages/events/package.json ./packages/events/
+COPY packages/embeddings/package.json ./packages/embeddings/
+COPY packages/crawler/package.json ./packages/crawler/
+COPY packages/chunker/package.json ./packages/chunker/
+COPY packages/chat/package.json ./packages/chat/
+COPY packages/database/package.json ./packages/database/
+COPY packages/types/package.json ./packages/types/
+COPY packages/ui/package.json ./packages/ui/
+
 RUN pnpm install
 COPY . .
 RUN pnpm --filter=widget build
