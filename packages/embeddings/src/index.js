@@ -15,6 +15,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./embedding-service"), exports);
+__exportStar(require("./embedding.module"), exports);
 __exportStar(require("./providers"), exports);
 __exportStar(require("./types"), exports);
 //# sourceMappingURL=index.js.map

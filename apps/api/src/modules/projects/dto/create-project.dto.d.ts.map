@@ -1,0 +1,1 @@
+{"version":3,"file":"create-project.dto.d.ts","sourceRoot":"","sources":["create-project.dto.ts"],"names":[],"mappings":"AAGA,qBAAa,gBAAgB;IAO3B,cAAc,EAAG,MAAM,CAAC;IASxB,IAAI,EAAG,MAAM,CAAC;IAYd,IAAI,EAAG,MAAM,CAAC;IASd,WAAW,CAAC,EAAE,MAAM,CAAC;IAYrB,QAAQ,CAAC,EAAE,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,CAAC;IAa/B,cAAc,CAAC,EAAE,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,CAAC;CACtC"}

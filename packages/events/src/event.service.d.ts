@@ -1,0 +1,46 @@
+import { OnModuleDestroy } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ConfigService } from '@nestjs/config';
+import { QueueService } from '@chatbot-rag/queue';
+import { Event, EventFilter, EventSubscription, EventDelivery, EventStats, WebhookStats, EventPublishOptions, DocumentEvent, ConversationEvent, UserEvent, SystemEvent, AnalyticsEvent } from './types';
+export declare class EventService implements OnModuleDestroy {
+    private readonly eventEmitter;
+    private readonly queueService;
+    private readonly configService;
+    private readonly logger;
+    private eventStore;
+    private subscriptions;
+    private deliveries;
+    private isProcessing;
+    private processingInterval?;
+    constructor(eventEmitter: EventEmitter2, queueService: QueueService, configService: ConfigService);
+    onModuleDestroy(): Promise<void>;
+    publishEvent(event: Omit<Event, 'id' | 'timestamp' | 'version'>, options?: EventPublishOptions): Promise<string>;
+    publishBatch(events: Array<Omit<Event, 'id' | 'timestamp' | 'version'>>, options?: EventPublishOptions): Promise<string[]>;
+    publishDocumentEvent(type: DocumentEvent['type'], data: DocumentEvent['data'], tenantId: string, userId?: string, options?: EventPublishOptions): Promise<string>;
+    publishConversationEvent(type: ConversationEvent['type'], data: ConversationEvent['data'], tenantId: string, userId?: string, options?: EventPublishOptions): Promise<string>;
+    publishUserEvent(type: UserEvent['type'], data: UserEvent['data'], tenantId: string, userId?: string, options?: EventPublishOptions): Promise<string>;
+    publishSystemEvent(type: SystemEvent['type'], data: SystemEvent['data'], tenantId?: string, options?: EventPublishOptions): Promise<string>;
+    publishAnalyticsEvent(type: AnalyticsEvent['type'], data: AnalyticsEvent['data'], tenantId: string, userId?: string, options?: EventPublishOptions): Promise<string>;
+    getEvent(eventId: string): Promise<Event | null>;
+    getEvents(filter: EventFilter): Promise<Event[]>;
+    createSubscription(subscription: Omit<EventSubscription, 'id' | 'createdAt' | 'updatedAt' | 'successCount' | 'failureCount'>): Promise<EventSubscription>;
+    updateSubscription(subscriptionId: string, updates: Partial<EventSubscription>): Promise<EventSubscription | null>;
+    deleteSubscription(subscriptionId: string): Promise<boolean>;
+    getSubscription(subscriptionId: string): Promise<EventSubscription | null>;
+    getSubscriptions(tenantId?: string): Promise<EventSubscription[]>;
+    getDeliveries(subscriptionId?: string, eventId?: string, status?: EventDelivery['status']): Promise<EventDelivery[]>;
+    retryDelivery(deliveryId: string): Promise<boolean>;
+    getEventStats(tenantId?: string, fromDate?: Date, toDate?: Date): Promise<EventStats>;
+    getWebhookStats(tenantId?: string): Promise<WebhookStats>;
+    private storeEvent;
+    private processWebhooks;
+    private matchesFilters;
+    private createWebhookDelivery;
+    private buildWebhookPayload;
+    private scheduleWebhookDelivery;
+    private startEventProcessing;
+    private processFailedDeliveries;
+    private calculateAverageEventsPerDay;
+}
+//# sourceMappingURL=event.service.d.ts.map

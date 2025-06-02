@@ -5,5 +5,6 @@ export * from './parsers/image-parser';
 export * from './parsers/excel-parser';
 export * from './parsers/csv-parser';
 export * from './parser-factory';
+export * from './parser.module';
 export * from './types';
 //# sourceMappingURL=index.d.ts.map

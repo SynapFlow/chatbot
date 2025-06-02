@@ -1,0 +1,1 @@
+{"version":3,"file":"useChatHistory.d.ts","sourceRoot":"","sources":["useChatHistory.ts"],"names":[],"mappings":"AAOA,UAAU,YAAY;IACpB,EAAE,EAAE,MAAM,CAAA;IACV,KAAK,CAAC,EAAE,MAAM,CAAA;IACd,SAAS,EAAE,IAAI,CAAA;IACf,SAAS,EAAE,IAAI,CAAA;IACf,YAAY,EAAE,MAAM,CAAA;IACpB,aAAa,CAAC,EAAE,IAAI,CAAA;CACrB;AAED,wBAAgB,cAAc;;;;;wCAaqB,MAAM;yCAgBL,MAAM;8CAeD,MAAM,SAAS,MAAM;;;;;;;EAyB7E"}

@@ -21,5 +21,6 @@ __exportStar(require("./parsers/image-parser"), exports);
 __exportStar(require("./parsers/excel-parser"), exports);
 __exportStar(require("./parsers/csv-parser"), exports);
 __exportStar(require("./parser-factory"), exports);
+__exportStar(require("./parser.module"), exports);
 __exportStar(require("./types"), exports);
 //# sourceMappingURL=index.js.map
