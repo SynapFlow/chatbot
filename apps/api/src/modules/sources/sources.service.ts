@@ -1,18 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import { prisma, Source, SourceType } from '@chatbot-rag/database';
-import { WebCrawler } from '@chatbot-rag/crawler';
+import { prisma, Source, SourceTypeEnum } from '@chatbot-rag/database';
+
+interface WebsiteSourceConfig {
+  name?: string;
+  url: string;
+  crawlDepth?: number;
+  maxPages?: number;
+  includePatterns?: string[];
+  excludePatterns?: string[];
+}
 
 @Injectable()
 export class SourcesService {
   constructor(@InjectQueue('crawling') private crawlingQueue: Queue) {}
 
-  async createWebsiteSource(projectId: string, config: any): Promise<Source> {
+  async createWebsiteSource(projectId: string, config: WebsiteSourceConfig): Promise<Source> {
     const source = await prisma.source.create({
       data: {
         projectId,
-        type: SourceType.website,
+        type: SourceTypeEnum.WEBSITE,
         name: config.name || new URL(config.url).hostname,
         config: {
           url: config.url,
@@ -45,17 +53,17 @@ export class SourcesService {
     }
 
     switch (source.type) {
-      case SourceType.website:
+      case SourceTypeEnum.WEBSITE:
         await this.crawlingQueue.add('crawl-website', {
           sourceId: source.id,
           projectId: source.projectId,
           config: source.config,
         });
         break;
-      case SourceType.document:
+      case SourceTypeEnum.DOCUMENT:
         // Handle document sync
         break;
-      case SourceType.integration:
+      case SourceTypeEnum.INTEGRATION:
         // Handle integration sync
         break;
     }

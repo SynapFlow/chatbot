@@ -1,15 +1,17 @@
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
-import { QueueModule } from '@chatbot-rag/queue';
-import { EventsModule } from '@chatbot-rag/events';
+// TODO: Re-enable when @chatbot-rag packages are available
+// import { QueueModule } from '@chatbot-rag/queue';
+// import { EventsModule } from '@chatbot-rag/events';
 import { AuthModule } from '../auth/auth.module';
 import { DocumentsController } from './documents.controller';
 import { memoryStorage } from 'multer';
 
 @Module({
   imports: [
-    QueueModule,
-    EventsModule,
+    // TODO: Re-enable when @chatbot-rag packages are available
+    // QueueModule,
+    // EventsModule,
     AuthModule,
     MulterModule.register({
       storage: memoryStorage(),

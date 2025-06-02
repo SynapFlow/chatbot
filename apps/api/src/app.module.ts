@@ -23,12 +23,13 @@ import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
 
 // Import shared packages
-import { QueueModule } from '@chatbot-rag/queue';
-import { EventsModule } from '@chatbot-rag/events';
-import { EmbeddingModule } from '@chatbot-rag/embeddings';
-import { VectorStoreModule } from '@chatbot-rag/vector-store';
-import { ParserModule } from '@chatbot-rag/parser';
-import { ChunkerModule } from '@chatbot-rag/chunker';
+// TODO: Uncomment when packages are built and properly configured
+// import { QueueModule } from '@chatbot-rag/queue';
+// import { EventsModule } from '@chatbot-rag/events';
+// import { EmbeddingModule } from '@chatbot-rag/embeddings';
+// import { VectorStoreModule } from '@chatbot-rag/vector-store';
+// import { ParserModule } from '@chatbot-rag/parser';
+// import { ChunkerModule } from '@chatbot-rag/chunker';
 
 @Module({
   imports: [
@@ -41,20 +42,23 @@ import { ChunkerModule } from '@chatbot-rag/chunker';
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => [
-        {
-          ttl: config.get('throttle.ttl'),
-          limit: config.get('throttle.limit'),
-        },
-      ],
+      useFactory: (config: ConfigService) => ({
+        throttlers: [
+          {
+            ttl: config.get('throttle.ttl') || 60000,
+            limit: config.get('throttle.limit') || 100,
+          },
+        ],
+      }),
     }),
     // Shared packages
-    QueueModule,
-    EventsModule,
-    EmbeddingModule,
-    VectorStoreModule,
-    ParserModule,
-    ChunkerModule,
+    // TODO: Uncomment when packages are built and properly configured
+    // QueueModule,
+    // EventsModule,
+    // EmbeddingModule,
+    // VectorStoreModule,
+    // ParserModule,
+    // ChunkerModule,
     // Core modules
     LoggerModule,
     TenantModule,

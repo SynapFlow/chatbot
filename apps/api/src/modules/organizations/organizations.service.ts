@@ -4,7 +4,7 @@ import {
   ConflictException,
   ForbiddenException,
 } from '@nestjs/common';
-import { prisma, Organization, User } from '@chatbot-rag/database';
+import { prisma, Organization } from '@chatbot-rag/database';
 import { CreateOrganizationDto, UpdateOrganizationDto } from './dto';
 import { SUBSCRIPTION_TIERS, RATE_LIMITS } from '@chatbot-rag/shared';
 

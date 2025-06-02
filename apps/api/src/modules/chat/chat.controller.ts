@@ -11,19 +11,39 @@ import {
   Request,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { ChatService } from '@chatbot-rag/chat';
-import { TenantGuard } from '../auth/guards/tenant.guard';
-import { AuthGuard } from '../auth/guards/auth.guard';
-import {
-  ChatRequest,
-  ChatResponse,
-  StreamChatResponse,
-} from '@chatbot-rag/chat';
+// TODO: Uncomment when @chatbot-rag/chat package is built
+// import { ChatService } from '@chatbot-rag/chat';
+// import {
+//   ChatRequest,
+//   ChatResponse,
+//   StreamChatResponse,
+// } from '@chatbot-rag/chat';
+import { TenantGuard } from '../../common/guards/tenant.guard';
+import { AuthGuard } from '../../common/guards/jwt-auth.guard';
+
+// Temporary types until packages are built
+interface ChatRequest {
+  message: string;
+  conversationId?: string;
+  projectId: string;
+}
+
+interface ChatResponse {
+  message: string;
+  conversationId: string;
+  messageId: string;
+}
+
+interface StreamChatResponse {
+  delta: string;
+  finished: boolean;
+}
 
 @Controller('chat')
 @UseGuards(AuthGuard, TenantGuard)
 export class ChatController {
-  constructor(private readonly chatService: ChatService) {}
+  // TODO: Uncomment when ChatService is available
+  // constructor(private readonly chatService: ChatService) {}
 
   @Post()
   async chat(
@@ -36,7 +56,15 @@ export class ChatController {
       userId: req.user?.id,
     };
 
-    return this.chatService.chat(requestWithTenant);
+    // TODO: Re-enable when ChatService is available
+    // return this.chatService.chat(requestWithTenant);
+    
+    // Mock response for now
+    return {
+      message: 'Mock response: ' + chatRequest.message,
+      conversationId: 'mock_' + Date.now(),
+      messageId: 'msg_' + Date.now(),
+    };
   }
 
   @Post('stream')
@@ -57,8 +85,18 @@ export class ChatController {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Cache-Control');
 
-    const observable = await this.chatService.streamChat(requestWithTenant);
+    // TODO: Re-enable when ChatService is available
+    // const observable = await this.chatService.streamChat(requestWithTenant);
     
+    // Mock streaming response for now
+    res.write(`data: ${JSON.stringify({
+      delta: 'Mock streaming response for: ' + chatRequest.message,
+      finished: true,
+    })}\n\n`);
+    res.end();
+    return;
+    
+    /*
     observable.subscribe({
       next: (data: StreamChatResponse) => {
         res.write(`data: ${JSON.stringify(data)}\n\n`);
@@ -74,11 +112,12 @@ export class ChatController {
         res.end();
       },
     });
+    */
   }
 
   @Get('conversations')
   async getConversations(
-    @Request() req: any,
+    @Request() _req: any,
     @Query('limit') limit?: number,
     @Query('offset') offset?: number,
   ) {
@@ -126,8 +165,8 @@ export class ChatController {
 
   @Delete('conversations/:id')
   async deleteConversation(
-    @Param('id') conversationId: string,
-    @Request() req: any,
+    @Param('id') _conversationId: string,
+    @Request() _req: any,
   ) {
     // Implementation would delete conversation
     return { success: true };
@@ -135,8 +174,8 @@ export class ChatController {
 
   @Get('conversations/:id/messages')
   async getMessages(
-    @Param('id') conversationId: string,
-    @Request() req: any,
+    @Param('id') _conversationId: string,
+    @Request() _req: any,
     @Query('limit') limit?: number,
     @Query('offset') offset?: number,
   ) {

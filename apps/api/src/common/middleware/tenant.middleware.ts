@@ -10,7 +10,7 @@ export interface TenantRequest extends Request {
 
 @Injectable()
 export class TenantMiddleware implements NestMiddleware {
-  use(req: TenantRequest, res: Response, next: NextFunction) {
+  use(req: TenantRequest, _res: Response, next: NextFunction) {
     // Extract tenant information from various sources
     const organizationId = 
       req.headers['x-organization-id'] as string ||

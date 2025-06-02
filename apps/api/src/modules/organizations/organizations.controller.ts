@@ -61,8 +61,8 @@ export class OrganizationsController {
 
   @Get()
   @ApiOperation({ summary: 'Get all organizations for current user' })
-  @ApiQuery({ name: 'skip', required: false, type: Number, default: 0 })
-  @ApiQuery({ name: 'take', required: false, type: Number, default: 10 })
+  @ApiQuery({ name: 'skip', required: false, type: Number, schema: { default: 0 } })
+  @ApiQuery({ name: 'take', required: false, type: Number, schema: { default: 10 } })
   @ApiQuery({ name: 'search', required: false, type: String })
   @ApiResponse({
     status: 200,

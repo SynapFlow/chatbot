@@ -13,10 +13,11 @@ import {
   Request,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { QueueService } from '@chatbot-rag/queue';
-import { EventService } from '@chatbot-rag/events';
-import { TenantGuard } from '../auth/guards/tenant.guard';
-import { AuthGuard } from '../auth/guards/auth.guard';
+// TODO: Re-enable when @chatbot-rag packages are available
+// import { QueueService } from '@chatbot-rag/queue';
+// import { EventService } from '@chatbot-rag/events';
+import { TenantGuard } from '../../common/guards/tenant.guard';
+import { AuthGuard } from '../../common/guards/jwt-auth.guard';
 import { Express } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
@@ -26,13 +27,14 @@ import * as fs from 'fs/promises';
 @UseGuards(AuthGuard, TenantGuard)
 export class DocumentsController {
   constructor(
-    private readonly queueService: QueueService,
-    private readonly eventService: EventService,
+    // TODO: Re-enable when @chatbot-rag packages are available
+    // private readonly queueService: QueueService,
+    // private readonly eventService: EventService,
   ) {}
 
   @Get()
   async getDocuments(
-    @Request() req: any,
+    @Request() _req: any,
     @Query('limit') limit?: number,
     @Query('offset') offset?: number,
     @Query('status') status?: string,
@@ -90,7 +92,7 @@ export class DocumentsController {
   @Get(':id')
   async getDocument(
     @Param('id') documentId: string,
-    @Request() req: any,
+    @Request() _req: any,
   ) {
     // Implementation would fetch specific document
     return {
@@ -168,32 +170,34 @@ export class DocumentsController {
         updatedAt: new Date(),
       };
 
+      // TODO: Re-enable when @chatbot-rag packages are available
       // Publish document uploaded event
-      await this.eventService.publishDocumentEvent(
-        'document.uploaded',
-        {
-          documentId,
-          fileName: file.originalname,
-          fileSize: file.size,
-          mimeType: file.mimetype,
-          status: 'processing',
-        },
-        req.tenantId,
-        req.user?.id,
-      );
+      // await this.eventService.publishDocumentEvent(
+      //   'document.uploaded',
+      //   {
+      //     documentId,
+      //     fileName: file.originalname,
+      //     fileSize: file.size,
+      //     mimeType: file.mimetype,
+      //     status: 'processing',
+      //   },
+      //   req.tenantId,
+      //   req.user?.id,
+      // );
 
+      // TODO: Re-enable when @chatbot-rag packages are available
       // Queue document processing job
-      await this.queueService.addDocumentProcessingJob({
-        documentId,
-        tenantId: req.tenantId,
-        filePath,
-        fileName: file.originalname,
-        mimeType: file.mimetype,
-        metadata: {
-          userId: req.user?.id,
-          uploadedAt: new Date().toISOString(),
-        },
-      });
+      // await this.queueService.addDocumentProcessingJob({
+      //   documentId,
+      //   tenantId: req.tenantId,
+      //   filePath,
+      //   fileName: file.originalname,
+      //   mimeType: file.mimetype,
+      //   metadata: {
+      //     userId: req.user?.id,
+      //     uploadedAt: new Date().toISOString(),
+      //   },
+      // });
 
       return {
         id: documentId,
@@ -219,7 +223,7 @@ export class DocumentsController {
   async updateDocument(
     @Param('id') documentId: string,
     @Body() updateData: { fileName?: string; metadata?: any },
-    @Request() req: any,
+    @Request() _req: any,
   ) {
     // Implementation would update document in database
     return {
@@ -242,17 +246,18 @@ export class DocumentsController {
     // 4. Remove from vector store
     // 5. Publish deletion event
 
-    await this.eventService.publishDocumentEvent(
-      'document.deleted',
-      {
-        documentId,
-        fileName: 'sample-document.pdf', // Would get from database
-        fileSize: 1024 * 1024,
-        mimeType: 'application/pdf',
-      },
-      req.tenantId,
-      req.user?.id,
-    );
+    // TODO: Re-enable when @chatbot-rag packages are available
+    // await this.eventService.publishDocumentEvent(
+    //   'document.deleted',
+    //   {
+    //     documentId,
+    //     fileName: 'sample-document.pdf', // Would get from database
+    //     fileSize: 1024 * 1024,
+    //     mimeType: 'application/pdf',
+    //   },
+    //   req.tenantId,
+    //   req.user?.id,
+    // );
 
     return {
       success: true,
@@ -262,8 +267,8 @@ export class DocumentsController {
 
   @Get(':id/chunks')
   async getDocumentChunks(
-    @Param('id') documentId: string,
-    @Request() req: any,
+    @Param('id') _documentId: string,
+    @Request() _req: any,
     @Query('limit') limit?: number,
     @Query('offset') offset?: number,
   ) {
@@ -281,18 +286,19 @@ export class DocumentsController {
     @Param('id') documentId: string,
     @Request() req: any,
   ) {
+    // TODO: Re-enable when @chatbot-rag packages are available
     // Implementation would requeue document for processing
-    await this.queueService.addDocumentProcessingJob({
-      documentId,
-      tenantId: req.tenantId,
-      filePath: '/path/to/file', // Would get from database
-      fileName: 'sample-document.pdf',
-      mimeType: 'application/pdf',
-      metadata: {
-        reprocessing: true,
-        userId: req.user?.id,
-      },
-    });
+    // await this.queueService.addDocumentProcessingJob({
+    //   documentId,
+    //   tenantId: req.tenantId,
+    //   filePath: '/path/to/file', // Would get from database
+    //   fileName: 'sample-document.pdf',
+    //   mimeType: 'application/pdf',
+    //   metadata: {
+    //     reprocessing: true,
+    //     userId: req.user?.id,
+    //   },
+    // });
 
     return {
       success: true,

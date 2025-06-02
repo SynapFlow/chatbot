@@ -61,8 +61,8 @@ export class ProjectsController {
   @Get('organization/:organizationId')
   @ApiOperation({ summary: 'Get all projects in an organization' })
   @ApiParam({ name: 'organizationId', type: String })
-  @ApiQuery({ name: 'skip', required: false, type: Number, default: 0 })
-  @ApiQuery({ name: 'take', required: false, type: Number, default: 10 })
+  @ApiQuery({ name: 'skip', required: false, type: Number, schema: { default: 0 } })
+  @ApiQuery({ name: 'take', required: false, type: Number, schema: { default: 10 } })
   @ApiQuery({ name: 'search', required: false, type: String })
   @ApiResponse({
     status: 200,

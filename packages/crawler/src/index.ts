@@ -1,4 +1,5 @@
 export * from './crawler';
+export * from './crawler.module';
 export * from './sitemap-parser';
 export * from './robots-parser';
 export * from './content-extractor';

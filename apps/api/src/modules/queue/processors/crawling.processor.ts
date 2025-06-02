@@ -1,9 +1,10 @@
 import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
 import { Injectable } from '@nestjs/common';
-import { prisma, JobStatus } from '@chatbot-rag/database';
-import { WebCrawler, CrawlResult } from '@chatbot-rag/crawler';
-import { LoggerService } from '../../common/logger/logger.service';
+// TODO: Re-enable when @chatbot-rag packages are available
+// import { prisma, JobStatusEnum } from '@chatbot-rag/database';
+// import { WebCrawler, CrawlResult } from '@chatbot-rag/crawler';
+import { LoggerService } from '../../../common/logger/logger.service';
 
 @Processor('crawling')
 @Injectable()
@@ -18,6 +19,10 @@ export class CrawlingProcessor {
     projectId: string;
     config: any;
   }>) {
+    // TODO: Re-enable when @chatbot-rag packages are available
+    throw new Error('Crawling functionality temporarily disabled - @chatbot-rag packages not available');
+    
+    /*
     const { sourceId, projectId, config } = job.data;
 
     this.logger.log(`Starting website crawl for source ${sourceId}`);
@@ -27,7 +32,7 @@ export class CrawlingProcessor {
       data: {
         projectId,
         type: 'website_crawl',
-        status: JobStatus.processing,
+        status: JobStatusEnum.PROCESSING,
         config: {
           sourceId,
           ...config,
@@ -84,7 +89,7 @@ export class CrawlingProcessor {
       await prisma.job.update({
         where: { id: crawlJob.id },
         data: {
-          status: JobStatus.completed,
+          status: JobStatusEnum.COMPLETED,
           completedAt: new Date(),
           result: {
             pagesProcessed: results.length,
@@ -102,7 +107,7 @@ export class CrawlingProcessor {
       await prisma.job.update({
         where: { id: crawlJob.id },
         data: {
-          status: JobStatus.failed,
+          status: JobStatusEnum.FAILED,
           completedAt: new Date(),
           error: error instanceof Error ? error.message : String(error),
         },
@@ -110,9 +115,13 @@ export class CrawlingProcessor {
 
       throw error;
     }
+    */
   }
 
-  private async processCrawlResults(sourceId: string, results: CrawlResult[]) {
+  private async processCrawlResults(sourceId: string, results: any[]) {
+    // TODO: Re-enable when @chatbot-rag packages are available
+    throw new Error('processCrawlResults temporarily disabled');
+    /*
     // Delete existing documents for this source
     await prisma.document.deleteMany({
       where: { sourceId },
@@ -137,5 +146,6 @@ export class CrawlingProcessor {
         });
       }
     }
+    */
   }
 }

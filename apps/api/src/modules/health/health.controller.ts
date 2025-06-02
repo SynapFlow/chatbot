@@ -44,7 +44,7 @@ export class HealthController {
     }
 
     try {
-      const collections = await qdrant.getCollections();
+      await qdrant.getCollections();
       checks.qdrant = true;
     } catch (error) {
       console.error('Qdrant health check failed:', error);

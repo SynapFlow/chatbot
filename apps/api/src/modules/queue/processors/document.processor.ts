@@ -1,9 +1,10 @@
 import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
 import { Injectable } from '@nestjs/common';
-import { prisma, JobStatus } from '@chatbot-rag/database';
-import { ParserFactory } from '@chatbot-rag/parser';
-import { LoggerService } from '../../common/logger/logger.service';
+// TODO: Re-enable when @chatbot-rag packages are available
+// import { prisma, JobStatusEnum } from '@chatbot-rag/database';
+// import { ParserFactory } from '@chatbot-rag/parser';
+import { LoggerService } from '../../../common/logger/logger.service';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 
@@ -26,6 +27,10 @@ export class DocumentProcessor {
     filename: string;
     mimeType?: string;
   }>) {
+    // TODO: Re-enable when @chatbot-rag packages are available
+    throw new Error('Document processing functionality temporarily disabled - @chatbot-rag packages not available');
+    
+    /*
     const { documentId, sourceId, projectId, fileBuffer, filename, mimeType } = job.data;
 
     this.logger.log(`Starting document processing for ${filename}`);
@@ -35,7 +40,7 @@ export class DocumentProcessor {
       data: {
         projectId,
         type: 'document_process',
-        status: JobStatus.processing,
+        status: JobStatusEnum.PROCESSING,
         config: {
           documentId,
           filename,
@@ -92,7 +97,7 @@ export class DocumentProcessor {
       await prisma.job.update({
         where: { id: processJob.id },
         data: {
-          status: JobStatus.completed,
+          status: JobStatusEnum.COMPLETED,
           completedAt: new Date(),
           result: {
             contentLength: parseResult.content.length,
@@ -110,7 +115,7 @@ export class DocumentProcessor {
       await prisma.job.update({
         where: { id: processJob.id },
         data: {
-          status: JobStatus.failed,
+          status: JobStatusEnum.FAILED,
           completedAt: new Date(),
           error: error instanceof Error ? error.message : String(error),
         },
@@ -129,9 +134,11 @@ export class DocumentProcessor {
 
       throw error;
     }
+    */
   }
 
   private estimateTokenCount(text: string): number {
+    // TODO: Re-enable when @chatbot-rag packages are available
     // Rough estimation: ~4 characters per token
     return Math.ceil(text.length / 4);
   }

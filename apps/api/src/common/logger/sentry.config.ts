@@ -15,12 +15,12 @@ export function initializeSentry(configService: ConfigService) {
     environment,
     integrations: [
       new Sentry.Integrations.Http({ tracing: true }),
-      new Sentry.Integrations.Express({ app: true }),
+      new Sentry.Integrations.Express(),
       new ProfilingIntegration(),
     ],
     tracesSampleRate: environment === 'production' ? 0.1 : 1.0,
     profilesSampleRate: environment === 'production' ? 0.1 : 1.0,
-    beforeSend(event, hint) {
+    beforeSend(event) {
       // Filter out sensitive data
       if (event.request) {
         delete event.request.cookies;

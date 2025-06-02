@@ -33,8 +33,8 @@ export function Log(message?: string) {
         const duration = Date.now() - startTime;
 
         logger.error(
-          `Failed ${className}.${methodName} after ${duration}ms`,
-          error.stack,
+          `Failed ${className}.${methodName} after ${duration}ms: ${error instanceof Error ? error.message : String(error)}`,
+          error instanceof Error ? error.stack : undefined,
           className,
         );
 

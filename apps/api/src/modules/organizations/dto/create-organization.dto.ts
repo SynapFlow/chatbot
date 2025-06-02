@@ -9,7 +9,7 @@ export class CreateOrganizationDto {
   @IsString()
   @IsNotEmpty()
   @Length(2, 100)
-  name: string;
+  name!: string;
 
   @ApiProperty({
     description: 'Organization slug (URL-friendly identifier)',
@@ -21,5 +21,5 @@ export class CreateOrganizationDto {
   @Matches(/^[a-z0-9-]+$/, {
     message: 'Slug must contain only lowercase letters, numbers, and hyphens',
   })
-  slug: string;
+  slug!: string;
 }

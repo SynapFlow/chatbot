@@ -1,23 +1,26 @@
 import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
 import { Injectable } from '@nestjs/common';
-import { prisma, JobStatus } from '@chatbot-rag/database';
-import { IntelligentChunker, ChunkingStrategy } from '@chatbot-rag/chunker';
-import { vectorStore } from '@chatbot-rag/database';
-import { LoggerService } from '../../common/logger/logger.service';
+// TODO: Re-enable when @chatbot-rag packages are available
+// import { prisma, JobStatusEnum } from '@chatbot-rag/database';
+// import { IntelligentChunker, ChunkingStrategy } from '@chatbot-rag/chunker';
+// import { vectorStore } from '@chatbot-rag/database';
+import { LoggerService } from '../../../common/logger/logger.service';
 import { ConfigService } from '@nestjs/config';
 
 @Processor('embedding-generation')
 @Injectable()
 export class EmbeddingProcessor {
-  private chunker: IntelligentChunker;
+  // TODO: Re-enable when @chatbot-rag packages are available
+  // private chunker: IntelligentChunker;
 
   constructor(
     private logger: LoggerService,
     private configService: ConfigService,
   ) {
     this.logger.setContext('EmbeddingProcessor');
-    this.chunker = new IntelligentChunker();
+    // TODO: Re-enable when @chatbot-rag packages are available
+    // this.chunker = new IntelligentChunker();
   }
 
   @Process('generate-embeddings')
@@ -26,6 +29,10 @@ export class EmbeddingProcessor {
     projectId: string;
     content: string;
   }>) {
+    // TODO: Re-enable when @chatbot-rag packages are available
+    throw new Error('Embedding generation functionality temporarily disabled - @chatbot-rag packages not available');
+    
+    /*
     const { documentId, projectId, content } = job.data;
 
     this.logger.log(`Starting embedding generation for document ${documentId}`);
@@ -35,7 +42,7 @@ export class EmbeddingProcessor {
       data: {
         projectId,
         type: 'embedding_generate',
-        status: JobStatus.processing,
+        status: JobStatusEnum.PROCESSING,
         config: {
           documentId,
         },
@@ -141,7 +148,7 @@ export class EmbeddingProcessor {
       await prisma.job.update({
         where: { id: embeddingJob.id },
         data: {
-          status: JobStatus.completed,
+          status: JobStatusEnum.COMPLETED,
           completedAt: new Date(),
           result: {
             chunksCreated: chunksToProcess.length,
@@ -159,7 +166,7 @@ export class EmbeddingProcessor {
       await prisma.job.update({
         where: { id: embeddingJob.id },
         data: {
-          status: JobStatus.failed,
+          status: JobStatusEnum.FAILED,
           completedAt: new Date(),
           error: error instanceof Error ? error.message : String(error),
         },
@@ -167,9 +174,13 @@ export class EmbeddingProcessor {
 
       throw error;
     }
+    */
   }
 
-  private detectChunkingStrategy(document: any): ChunkingStrategy {
+  private detectChunkingStrategy(document: any): any {
+    // TODO: Re-enable when @chatbot-rag packages are available
+    return 'RECURSIVE';
+    /*
     const mimeType = document.metadata?.mimeType || '';
     const title = document.title.toLowerCase();
 
@@ -187,9 +198,11 @@ export class EmbeddingProcessor {
     }
 
     return ChunkingStrategy.RECURSIVE;
+    */
   }
 
   private async generateEmbeddings(texts: string[]): Promise<number[][]> {
+    // TODO: Re-enable when @chatbot-rag packages are available
     // Placeholder implementation
     // In production, this would call OpenAI, Anthropic, or another embedding service
     

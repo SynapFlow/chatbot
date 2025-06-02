@@ -8,7 +8,7 @@ export class CreateProjectDto {
   })
   @IsUUID()
   @IsNotEmpty()
-  organizationId: string;
+  organizationId!: string;
 
   @ApiProperty({
     description: 'Project name',
@@ -17,7 +17,7 @@ export class CreateProjectDto {
   @IsString()
   @IsNotEmpty()
   @Length(2, 100)
-  name: string;
+  name!: string;
 
   @ApiProperty({
     description: 'Project slug (URL-friendly identifier)',
@@ -29,7 +29,7 @@ export class CreateProjectDto {
   @Matches(/^[a-z0-9-]+$/, {
     message: 'Slug must contain only lowercase letters, numbers, and hyphens',
   })
-  slug: string;
+  slug!: string;
 
   @ApiPropertyOptional({
     description: 'Project description',

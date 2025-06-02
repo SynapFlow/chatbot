@@ -5,6 +5,6 @@ import { SourcesService } from './sources.service';
 @ApiTags('Sources')
 @Controller('sources')
 export class SourcesController {
-  constructor(private readonly sourcesService: SourcesService) {}
+  constructor(private readonly _sourcesService: SourcesService) {}
   // Controller implementation will be completed with other source types
 }

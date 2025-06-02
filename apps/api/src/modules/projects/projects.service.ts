@@ -50,7 +50,7 @@ export class ProjectsService {
     }
 
     // Create project with default API key
-    const project = await prisma.$transaction(async (tx) => {
+    const project = await prisma.$transaction(async (tx: any) => {
       const newProject = await tx.project.create({
         data: {
           organizationId: dto.organizationId,

@@ -166,4 +166,19 @@ export class TenantService {
   validateProjectAccess(projectId: string): boolean {
     return this.context.projectId === projectId;
   }
+
+  async userHasAccessToTenant(userId: string, tenantId: string): Promise<boolean> {
+    try {
+      const userOrganization = await prisma.organizationMember.findFirst({
+        where: {
+          userId,
+          organizationId: tenantId,
+        },
+      });
+      
+      return !!userOrganization;
+    } catch (error) {
+      return false;
+    }
+  }
 }

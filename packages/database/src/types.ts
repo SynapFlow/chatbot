@@ -12,6 +12,38 @@ export type MessageRole = z.infer<typeof MessageRoleSchema>;
 export type SourceType = z.infer<typeof SourceTypeSchema>;
 export type JobStatus = z.infer<typeof JobStatusSchema>;
 
+// Export actual enum objects for runtime use with different names to avoid conflicts
+export const UserRoleEnum = {
+  ADMIN: 'admin' as const,
+  USER: 'user' as const,
+  VIEWER: 'viewer' as const,
+};
+
+export const AuthProviderEnum = {
+  LOCAL: 'local' as const,
+  GOOGLE: 'google' as const,
+  GITHUB: 'github' as const,
+};
+
+export const MessageRoleEnum = {
+  USER: 'user' as const,
+  ASSISTANT: 'assistant' as const,
+  SYSTEM: 'system' as const,
+};
+
+export const SourceTypeEnum = {
+  WEBSITE: 'website' as const,
+  DOCUMENT: 'document' as const,
+  INTEGRATION: 'integration' as const,
+};
+
+export const JobStatusEnum = {
+  PENDING: 'pending' as const,
+  PROCESSING: 'processing' as const,
+  COMPLETED: 'completed' as const,
+  FAILED: 'failed' as const,
+};
+
 export const CreateUserSchema = z.object({
   email: z.string().email(),
   username: z.string().optional(),

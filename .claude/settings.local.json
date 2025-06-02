@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(pnpm install:*)",
+      "Bash(rg:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(npm install)",
+      "Bash(cd apps/api)",
+      "Bash(npx tsc --noEmit)"
+    ],
+    "deny": []
+  }
+}

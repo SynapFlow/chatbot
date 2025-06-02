@@ -29,6 +29,13 @@ import {
 } from './dto';
 import { User } from '@chatbot-rag/database';
 
+interface UpdateProfileDto {
+  username?: string;
+  firstName?: string;
+  lastName?: string;
+  avatar?: string;
+}
+
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
@@ -50,7 +57,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Login with email and password' })
   @ApiResponse({ status: 200, description: 'Login successful' })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
-  async login(@Request() req, @Body() dto: LoginDto) {
+  async login(@Request() req, @Body() _dto: LoginDto) {
     return this.authService.login(req.user);
   }
 
@@ -61,7 +68,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Refresh access token' })
   @ApiResponse({ status: 200, description: 'Token refreshed successfully' })
   @ApiResponse({ status: 401, description: 'Invalid refresh token' })
-  async refresh(@Request() req, @Body() dto: RefreshTokenDto) {
+  async refresh(@Request() req, @Body() _dto: RefreshTokenDto) {
     return this.authService.refreshTokens(req.user.sub, req.user.refreshToken);
   }
 
@@ -89,7 +96,7 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update user profile' })
   @ApiResponse({ status: 200, description: 'Profile updated successfully' })
-  async updateProfile(@CurrentUser() user: User, @Body() dto: any) {
+  async updateProfile(@CurrentUser() user: User, @Body() dto: UpdateProfileDto) {
     return this.authService.updateProfile(user.id, dto);
   }
 

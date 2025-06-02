@@ -17,8 +17,7 @@ export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
     const response = context.switchToHttp().getResponse();
-    const { method, url, ip, headers } = request;
-    const userAgent = headers['user-agent'] || '';
+    const { method, url } = request;
     const startTime = Date.now();
 
     return next.handle().pipe(
@@ -27,32 +26,18 @@ export class LoggingInterceptor implements NestInterceptor {
           const duration = Date.now() - startTime;
           const { statusCode } = response;
 
-          this.logger.logRequest(method, url, statusCode, duration);
+          this.logger.log(`${method} ${url} ${statusCode} - ${duration}ms`);
 
           // Log slow requests
           if (duration > 1000) {
-            this.logger.warn(`Slow request detected: ${method} ${url} took ${duration}ms`, {
-              method,
-              url,
-              duration,
-              ip,
-              userAgent,
-            });
+            this.logger.warn(`Slow request detected: ${method} ${url} took ${duration}ms`);
           }
         },
         error: (error) => {
           const duration = Date.now() - startTime;
           const statusCode = error.status || 500;
 
-          this.logger.error(`Request failed: ${method} ${url}`, error.stack, {
-            method,
-            url,
-            statusCode,
-            duration,
-            ip,
-            userAgent,
-            error: error.message,
-          });
+          this.logger.error(`Request failed: ${method} ${url}`, error.stack);
         },
       }),
     );
