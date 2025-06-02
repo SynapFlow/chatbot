@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
         }),
       },
       body: JSON.stringify(body),
+      signal: AbortSignal.timeout(30000), // 30 second timeout
     })
 
     if (!response.ok) {
